@@ -84,16 +84,35 @@ def reset_wandb_env():
             del os.environ[k]
 
 def train(sweep_q, worker_q, count):
+    config_defaults = {
+        "n_layers": 1,
+        "layer_1": 1,
+        "activation_1": "linear",
+        "layer_2": 1,
+        "activation_2": "linear",
+        "layer_3": 1,
+        "activation_3": "linear",
+        "layer_4": 1,
+        "activation_4": "linear",
+        "layer_5": 1,
+        "activation_5": "linear",
+        "optimizer": "adam",
+        "epoch": 100        
+    }
+
     reset_wandb_env()
     worker_data = worker_q.get()
     run_name = "{}-{}".format(worker_data.sweep_run_name, worker_data.num)
-    config = worker_data.config
+    # config = worker_data.config
     run = wandb.init(
         group=worker_data.sweep_id,
         job_type=worker_data.sweep_run_name,
         name=run_name,
-        config=config,
+        config=config_defaults,
+        settings=wandb.Settings(start_method="thread")
     )
+    
+    config = worker_data.config
     
     model = Sequential()
 
@@ -162,7 +181,7 @@ def main():
     project_url = sweep_run.get_project_url()
     sweep_group_url = "{}/groups/{}".format(project_url, sweep_id)
     sweep_run.notes = sweep_group_url
-    # sweep_run.save()
+    sweep_run.save()
     sweep_run_name = sweep_run.name or sweep_run.id or "unknown"
 
     metrics = []
