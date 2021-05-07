@@ -116,41 +116,41 @@ def train(sweep_q, worker_q, count):
     
     model = Sequential()
 
-    if config.n_layers==1:
-        model.add(Dense(units=config.layer_1, activation=config.activation_1))    
-    if config.n_layers==2:
-        model.add(Dense(units=config.layer_1, activation=config.activation_1))
-        model.add(Dense(units=config.layer_2, activation=config.activation_2))
-    if config.n_layers==3:
-        model.add(Dense(units=config.layer_1, activation=config.activation_1))
-        model.add(Dense(units=config.layer_2, activation=config.activation_2))
-        model.add(Dense(units=config.layer_3, activation=config.activation_3))
-    if config.n_layers==4:
-        model.add(Dense(units=config.layer_1, activation=config.activation_1))
-        model.add(Dense(units=config.layer_2, activation=config.activation_2))
-        model.add(Dense(units=config.layer_3, activation=config.activation_3))
-        model.add(Dense(units=config.layer_4, activation=config.activation_4))
-    if config.n_layers==5:
-        model.add(Dense(units=config.layer_1, activation=config.activation_1))
-        model.add(Dense(units=config.layer_2, activation=config.activation_2))
-        model.add(Dense(units=config.layer_3, activation=config.activation_3))
-        model.add(Dense(units=config.layer_4, activation=config.activation_4))
-        model.add(Dense(units=config.layer_5, activation=config.activation_5))
+    if config['n_layers']==1:
+        model.add(Dense(units=config['layer_1'], activation=config['activation_1']))    
+    if config['n_layers']==2:
+        model.add(Dense(units=config['layer_1'], activation=config['activation_1']))
+        model.add(Dense(units=config['layer_2'], activation=config['activation_2']))
+    if config['n_layers']==3:
+        model.add(Dense(units=config['layer_1'], activation=config['activation_1']))
+        model.add(Dense(units=config['layer_2'], activation=config['activation_2']))
+        model.add(Dense(units=config['layer_3'], activation=config['activation_3']))
+    if config['n_layers']==4:
+        model.add(Dense(units=config['layer_1'], activation=config['activation_1']))
+        model.add(Dense(units=config['layer_2'], activation=config['activation_2']))
+        model.add(Dense(units=config['layer_3'], activation=config['activation_3']))
+        model.add(Dense(units=config['layer_4'], activation=config['activation_4']))
+    if config['n_layers']==5:
+        model.add(Dense(units=config['layer_1'], activation=config['activation_1']))
+        model.add(Dense(units=config['layer_2'], activation=config['activation_2']))
+        model.add(Dense(units=config['layer_3'], activation=config['activation_3']))
+        model.add(Dense(units=config['layer_4'], activation=config['activation_4']))
+        model.add(Dense(units=config['layer_5'], activation=config['activation_5']))
 
     model.add(Dense(1, activation="sigmoid"))
 
-    model.compile(loss='binary_crossentropy', optimizer=config.optimizer, metrics=['accuracy', 'AUC'])
+    model.compile(loss='binary_crossentropy', optimizer=config['optimizer'], metrics=['accuracy', 'AUC'])
     
     if count==0:
-        history = model.fit(X_train_0, y_train_0, batch_size=64, epochs=config.epoch, validation_data=(X_test_0, y_test_0), callbacks=[WandbCallback()])
+        history = model.fit(X_train_0, y_train_0, batch_size=64, epochs=config['epoch'], validation_data=(X_test_0, y_test_0), callbacks=[WandbCallback()])
     elif count==1:
-        history = model.fit(X_train_1, y_train_1, batch_size=64, epochs=config.epoch, validation_data=(X_test_1, y_test_1), callbacks=[WandbCallback()])
+        history = model.fit(X_train_1, y_train_1, batch_size=64, epochs=config['epoch'], validation_data=(X_test_1, y_test_1), callbacks=[WandbCallback()])
     elif count==2:
-        history = model.fit(X_train_2, y_train_2, batch_size=64, epochs=config.epoch, validation_data=(X_test_2, y_test_2), callbacks=[WandbCallback()])
+        history = model.fit(X_train_2, y_train_2, batch_size=64, epochs=config['epoch'], validation_data=(X_test_2, y_test_2), callbacks=[WandbCallback()])
     elif count==3:
-        history = model.fit(X_train_3, y_train_3, batch_size=64, epochs=config.epoch, validation_data=(X_test_3, y_test_3), callbacks=[WandbCallback()])
+        history = model.fit(X_train_3, y_train_3, batch_size=64, epochs=config['epoch'], validation_data=(X_test_3, y_test_3), callbacks=[WandbCallback()])
     else:
-        history = model.fit(X_train_4, y_train_4, batch_size=64, epochs=config.epoch, validation_data=(X_test_4, y_test_4), callbacks=[WandbCallback()])
+        history = model.fit(X_train_4, y_train_4, batch_size=64, epochs=config['epoch'], validation_data=(X_test_4, y_test_4), callbacks=[WandbCallback()])
     
     run.log(dict(val_accuracy=history.history['val_accuracy']))
     # wandb.join()
